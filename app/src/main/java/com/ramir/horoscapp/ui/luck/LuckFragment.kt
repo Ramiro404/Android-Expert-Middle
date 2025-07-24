@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ramir.horoscapp.databinding.FragmentLuckBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class LuckFragment : Fragment() {
     private lateinit var  _binding: FragmentLuckBinding
     private val binding get() = _binding!!

@@ -1,6 +1,15 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+    id("androidx.navigation.safeargs.kotlin")
+    //alias(libs.plugins.android.application)
+//    alias(libs.plugins.kotlin.android)
+//    id("com.google.devtools.ksp")
+//    id("com.google.dagger.hilt.android")
+//    id("kotlin-kapt")
+//    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -36,12 +45,28 @@ android {
     buildFeatures{
         viewBinding = true
     }
+    kotlin{
+        jvmToolchain(24)
+    }
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
     val navVersion = "2.9.1"
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
+
+    //DaggerHilt
+    //implementation("com.google.dagger:hilt-android:2.56")
+    //kapt("com.google.dagger:hilt-compiler:2.56")
+
+    //implementation("com.google.dagger:hilt-android:2.56.2")
+    //ksp("com.google.dagger:hilt-android-compiler:2.56.2")
+
+    implementation("com.google.dagger:hilt-android:2.56.2")
+    kapt("com.google.dagger:hilt-compiler:2.56.2")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

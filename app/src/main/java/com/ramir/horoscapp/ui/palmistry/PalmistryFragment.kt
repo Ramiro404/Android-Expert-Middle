@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.ramir.horoscapp.R
 import com.ramir.horoscapp.databinding.FragmentPalmistryBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class PalmistryFragment : Fragment() {
     private lateinit var _binding: FragmentPalmistryBinding
     private val binding get() = _binding!!
