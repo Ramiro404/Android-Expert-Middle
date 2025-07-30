@@ -1,6 +1,7 @@
 package com.ramir.horoscapp.ui.luck
 
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,13 +15,18 @@ import androidx.core.animation.doOnEnd
 import androidx.core.view.isVisible
 import com.ramir.horoscapp.R
 import com.ramir.horoscapp.databinding.FragmentLuckBinding
+import com.ramir.horoscapp.ui.providers.RandomCardProvider
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlin.random.Random
 
 @AndroidEntryPoint
 class LuckFragment : Fragment() {
     private lateinit var  _binding: FragmentLuckBinding
     private val binding get() = _binding!!
+
+    @Inject
+    lateinit var randomCardProvider: RandomCardProvider
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +43,28 @@ class LuckFragment : Fragment() {
     }
 
     private fun initUI(){
+        preparePrediction()
         initListeners()
+    }
+
+    private fun preparePrediction(){
+        val luck = randomCardProvider.getLucky()
+        luck?.let { value ->
+            val currentPrediction = getString(value.text)
+            binding.tvLucky.text = currentPrediction
+            binding.ivLuckyCard.setImageResource(value.image)
+            binding.tvShare.setOnClickListener{ shareResult(currentPrediction) }
+        }
+    }
+
+    private fun shareResult(prediction:String){
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, prediction)
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
     }
 
     private fun initListeners(){
