@@ -1,6 +1,7 @@
 package com.ramir.horoscapp.ui.palmistry
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import com.ramir.horoscapp.R
 import com.ramir.horoscapp.databinding.FragmentPalmistryBinding
@@ -58,6 +63,27 @@ class PalmistryFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentPalmistryBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    private fun startCamera(){
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
+        cameraProviderFuture.addListener({
+            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+            val preview = Preview.Builder()
+                .build()
+                .also {
+                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+                }
+
+            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+            try{
+                cameraProvider.unbindAll()
+                cameraProvider.bindToLifecycle(this, cameraSelector, preview)
+            }catch (e:Exception){
+                Log.e("aris", "Algo peto ${e.message}")
+            }
+        }, ContextCompat.getMainExecutor(requireContext()))
+
     }
 
 
