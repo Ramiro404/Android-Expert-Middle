@@ -63,6 +63,7 @@ android {
 }
 
 dependencies {
+    testImplementation(libs.junit.jupiter)
     val navVersion = "2.9.1"
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
@@ -93,7 +94,12 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+
+    //Unit testing
     testImplementation(libs.junit)
+    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.4.2") // ctrl + shift + t
+    testImplementation("io.mockk:mockk:1.12.3")
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
